@@ -1,0 +1,182 @@
+{
+    "ru": {
+        "start_kb": {
+            "menu": "\uD83D\uDCA2 Меню",
+            "registration": {
+                "text": "\uD83D\uDC49 Регистрация",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            }
+        },
+        "menu_kb": {
+            "application": "\uD83D\uDCF1 Приложение",
+            "mirror": "\uD83D\uDD17 Зеркало",
+            "support": "\uD83D\uDCE8 Чат с сапортом",
+            "language": "\uD83C\uDF10 Язык",
+            "registration": "\uD83C\uDFAF Регистрация",
+            "stickerpack": "\uD83C\uDF81 Стикер пак",
+            "deposit": "\uD83D\uDCB5 Депозит",
+            "back": "↩️ Назад"
+        },
+        "language_kb": {
+            "uk": "\uD83C\uDDFA\uD83C\uDDE6 Українська",
+            "ru": "\uD83C\uDDF7\uD83C\uDDFA Русский",
+            "en": "\uD83C\uDDEC\uD83C\uDDE7 English",
+            "backtomenu": "↩️ Назад в меню"
+        },
+        "downloadapp_kb": {
+            "backtomenu": "↩️ Назад в меню"
+        },
+        "mirror_kb": {
+            "currentmirror":{
+                "text": "Актуальное зеркало",
+                "web_app": {
+                    "url": "https://bet2fun.me"
+                }
+            },
+            "backtomenu": "↩️ Назад в меню"
+        },
+        "register_kb": {
+            "registration": {
+                "text": "Регистрация",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            },
+            "backtomenu": "↩️ Назад в меню"
+        },
+        "stikers_kb": {
+            "backtomenu": "↩️ Назад в меню"
+        },
+        "deposit_kb": {
+            "deposit": {
+                "text": "Депозит",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            },
+            "backtomenu": "↩️ Назад в меню"
+        }
+    },
+    "en": {
+        "start_kb": {
+            "menu": "\uD83D\uDCA2 Menu",
+            "registration": {
+                "text": "\uD83D\uDC49 Registration",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            }
+        },
+        "menu_kb": {
+            "application": "\uD83D\uDCF1 Application",
+            "mirror": "\uD83D\uDD17 Mirror",
+            "support": "\uD83D\uDCE8 Chat with support",
+            "language": "\uD83C\uDF10 Language",
+            "registration": "\uD83C\uDFAF Registration",
+            "stickerpack": "\uD83C\uDF81 Sticker pack",
+            "deposit": "\uD83D\uDCB5 Deposit",
+            "back": "↩️ Back"
+        },
+        "language_kb": {
+            "uk": "\uD83C\uDDFA\uD83C\uDDE6 Українська",
+            "ru": "\uD83C\uDDF7\uD83C\uDDFA Русский",
+            "en": "\uD83C\uDDEC\uD83C\uDDE7 English",
+            "backtomenu": "↩️ Back to menu"
+        },
+        "downloadapp_kb": {
+            "backtomenu": "↩️ Back to menu"
+        },
+        "mirror_kb": {
+            "currentmirror": {
+                "text": "Current mirror",
+                "web_app": {
+                    "url": "https://bet2fun.me"
+                }
+            },
+            "backtomenu": "↩️ Back to menu"
+        },
+        "register_kb": {
+            "registration": {
+                "text": "Registration",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            },
+            "backtomenu": "↩️ Back to menu"
+        },
+        "stikers_kb": {
+            "backtomenu": "↩️ Back to menu"
+        },
+        "deposit_kb": {
+            "deposit": {
+                "text": "Deposit",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            },
+            "backtomenu": "↩️ Back to menu"
+        }
+    },
+    "uk": {
+        "start_kb": {
+            "menu": "\uD83D\uDCA2 Меню",
+            "registration": {
+                "text": "\uD83D\uDC49 Реєстрація",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            }
+        },
+        "menu_kb": {
+            "application": "\uD83D\uDCF1 Додаток",
+            "mirror": "\uD83D\uDD17 Дзеркало",
+            "support": "\uD83D\uDCE8 Чат з підтримкою",
+            "language": "\uD83C\uDF10 Мова",
+            "registration": "\uD83C\uDFAF Реєстрація",
+            "stickerpack": "\uD83C\uDF81 Стікер пак",
+            "deposit": "\uD83D\uDCB5 Депозит",
+            "back": "↩️ На попередню сторінку"
+        },
+        "language_kb": {
+            "uk": "\uD83C\uDDFA\uD83C\uDDE6 Українська",
+            "ru": "\uD83C\uDDF7\uD83C\uDDFA Русский",
+            "en": "\uD83C\uDDEC\uD83C\uDDE7 English",
+            "backtomenu": "↩️ Повернутися в меню"
+        },
+        "downloadapp_kb": {
+            "backtomenu": "↩️ Повернутися в меню"
+        },
+        "mirror_kb": {
+            "currentmirror":{
+                "text": "Актуальне дзеркало",
+                "web_app": {
+                    "url": "https://bet2fun.me"
+                }
+            },
+            "backtomenu": "↩️ Повернутися в меню"
+        },
+        "register_kb": {
+            "registration": {
+                "text": "Реєстрація",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            },
+            "backtomenu": "↩️ Повернутися в меню"
+        },
+        "stikers_kb": {
+            "backtomenu": "↩️ Повернутися в меню"
+        },
+        "deposit_kb": {
+            "deposit": {
+                "text": "Депозит",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            },
+            "backtomenu": "↩️ Повернутися в меню"
+        }
+    }
+}
