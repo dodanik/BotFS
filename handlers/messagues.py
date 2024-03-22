@@ -21,7 +21,7 @@ async def get_headers():
 async def search_user(message):
     user_contact = await get_users_contact()
     if str(message.from_user.id) not in user_contact:
-        from_user_id = "user_" + str(message.from_user.id)
+        from_user_id = "user_fs_" + str(message.from_user.id)
         create_contact = {
             "name": message.from_user.first_name,
             "userId": from_user_id,
