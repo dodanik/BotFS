@@ -20,9 +20,12 @@
             "back": "↩️ Назад"
         },
         "language_kb": {
+            "en": "\uD83C\uDDEC\uD83C\uDDE7 English",
+            "pt": "\uD83C\uDDF5\uD83C\uDDF9 Português",
             "uk": "\uD83C\uDDFA\uD83C\uDDE6 Українська",
             "ru": "\uD83C\uDDF7\uD83C\uDDFA Русский",
-            "en": "\uD83C\uDDEC\uD83C\uDDE7 English",
+            "uz": "\uD83C\uDDFA\uD83C\uDDFF O'zbek",
+            "kk": "\uD83C\uDDF0\uD83C\uDDFF Қазақ",
             "backtomenu": "↩️ Назад в меню"
         },
         "downloadapp_kb": {
@@ -80,9 +83,12 @@
             "back": "↩️ Back"
         },
         "language_kb": {
+            "en": "\uD83C\uDDEC\uD83C\uDDE7 English",
+            "pt": "\uD83C\uDDF5\uD83C\uDDF9 Português",
             "uk": "\uD83C\uDDFA\uD83C\uDDE6 Українська",
             "ru": "\uD83C\uDDF7\uD83C\uDDFA Русский",
-            "en": "\uD83C\uDDEC\uD83C\uDDE7 English",
+            "uz": "\uD83C\uDDFA\uD83C\uDDFF O'zbek",
+            "kk": "\uD83C\uDDF0\uD83C\uDDFF Қазақ",
             "backtomenu": "↩️ Back to menu"
         },
         "downloadapp_kb": {
@@ -140,9 +146,12 @@
             "back": "↩️ На попередню сторінку"
         },
         "language_kb": {
+            "en": "\uD83C\uDDEC\uD83C\uDDE7 English",
+            "pt": "\uD83C\uDDF5\uD83C\uDDF9 Português",
             "uk": "\uD83C\uDDFA\uD83C\uDDE6 Українська",
             "ru": "\uD83C\uDDF7\uD83C\uDDFA Русский",
-            "en": "\uD83C\uDDEC\uD83C\uDDE7 English",
+            "uz": "\uD83C\uDDFA\uD83C\uDDFF O'zbek",
+            "kk": "\uD83C\uDDF0\uD83C\uDDFF Қазақ",
             "backtomenu": "↩️ Повернутися в меню"
         },
         "downloadapp_kb": {
@@ -177,6 +186,195 @@
                 }
             },
             "backtomenu": "↩️ Повернутися в меню"
+        }
+    },
+    "uz": {
+        "start_kb": {
+            "menu": "\uD83D\uDCA2 Menyu",
+            "registration": {
+                "text": "\uD83D\uDC49 Roʻyxatdan oʻtish",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            }
+        },
+        "menu_kb": {
+            "application": "\uD83D\uDCF1 Ilova",
+            "mirror": "\uD83D\uDD17 Oyna",
+            "support": "\uD83D\uDCE8 Qo'llab-quvvatlash bilan suhbatlashing",
+            "language": "\uD83C\uDF10 Til",
+            "registration": "\uD83C\uDFAF Roʻyxatdan oʻtish",
+            "stickerpack": "\uD83C\uDF81 Stikerlar to'plami",
+            "deposit": "\uD83D\uDCB5 Depozit",
+            "back": "↩️ Orqaga"
+        },
+        "language_kb": {
+            "en": "\uD83C\uDDEC\uD83C\uDDE7 English",
+            "pt": "\uD83C\uDDF5\uD83C\uDDF9 Português",
+            "uk": "\uD83C\uDDFA\uD83C\uDDE6 Українська",
+            "ru": "\uD83C\uDDF7\uD83C\uDDFA Русский",
+            "uz": "\uD83C\uDDFA\uD83C\uDDFF O'zbek",
+            "kk": "\uD83C\uDDF0\uD83C\uDDFF Қазақ",
+            "backtomenu": "↩️ Menyuga qaytish"
+        },
+        "downloadapp_kb": {
+            "backtomenu": "↩️ Menyuga qaytish"
+        },
+        "mirror_kb": {
+            "currentmirror":{
+                "text": "Hozirgi oyna",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            },
+            "backtomenu": "↩️ Menyuga qaytish"
+        },
+        "register_kb": {
+            "registration": {
+                "text": "Roʻyxatdan oʻtish",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            },
+            "backtomenu": "↩️ Menyuga qaytish"
+        },
+        "stikers_kb": {
+            "backtomenu": "↩️ Menyuga qaytish"
+        },
+        "deposit_kb": {
+            "deposit": {
+                "text": "Depozit",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            },
+            "backtomenu": "↩️ Menyuga qaytish"
+        }
+    },
+    "pt": {
+        "start_kb": {
+            "menu": "\uD83D\uDCA2 Cardápio",
+            "registration": {
+                "text": "\uD83D\uDC49 Cadastro",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            }
+        },
+        "menu_kb": {
+            "application": "\uD83D\uDCF1 Aplicativo",
+            "mirror": "\uD83D\uDD17 Espelho",
+            "support": "\uD83D\uDCE8 Bate-papo de suporte",
+            "language": "\uD83C\uDF10 Linguagem",
+            "registration": "\uD83C\uDFAF Cadastro",
+            "stickerpack": "\uD83C\uDF81 Pacote de adesivos",
+            "deposit": "\uD83D\uDCB5 Depósito",
+            "back": "↩️ Para a página anterior"
+        },
+        "language_kb": {
+            "en": "\uD83C\uDDEC\uD83C\uDDE7 English",
+            "pt": "\uD83C\uDDF5\uD83C\uDDF9 Português",
+            "uk": "\uD83C\uDDFA\uD83C\uDDE6 Українська",
+            "ru": "\uD83C\uDDF7\uD83C\uDDFA Русский",
+            "uz": "\uD83C\uDDFA\uD83C\uDDFF O'zbek",
+            "kk": "\uD83C\uDDF0\uD83C\uDDFF Қазақ",
+            "backtomenu": "↩️ Voltar ao menu"
+        },
+        "downloadapp_kb": {
+            "backtomenu": "↩️ Voltar ao menu"
+        },
+        "mirror_kb": {
+            "currentmirror":{
+                "text": "Espelho atual",
+                "web_app": {
+                    "url": "https://bet2fun.me"
+                }
+            },
+            "backtomenu": "↩️ Voltar ao menu"
+        },
+        "register_kb": {
+            "registration": {
+                "text": "Cadastro",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            },
+            "backtomenu": "↩️ Voltar ao menu"
+        },
+        "stikers_kb": {
+            "backtomenu": "↩️ Voltar ao menu"
+        },
+        "deposit_kb": {
+            "deposit": {
+                "text": "Depósito",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            },
+            "backtomenu": "↩️ Voltar ao menu"
+        }
+    },
+    "kk": {
+        "start_kb": {
+            "menu": "\uD83D\uDCA2 Мәзір",
+            "registration": {
+                "text": "\uD83D\uDC49 Тіркеу",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            }
+        },
+        "menu_kb": {
+            "application": "\uD83D\uDCF1 Қолдану",
+            "mirror": "\uD83D\uDD17 Айна",
+            "support": "\uD83D\uDCE8 Қолдау арқылы сөйлесу",
+            "language": "\uD83C\uDF10 Тіл",
+            "registration": "\uD83C\uDFAF Тіркеу",
+            "stickerpack": "\uD83C\uDF81 Стикерлер жинағы",
+            "deposit": "\uD83D\uDCB5 Депозит",
+            "back": "↩️ Артқа"
+        },
+        "language_kb": {
+            "en": "\uD83C\uDDEC\uD83C\uDDE7 English",
+            "pt": "\uD83C\uDDF5\uD83C\uDDF9 Português",
+            "uk": "\uD83C\uDDFA\uD83C\uDDE6 Українська",
+            "ru": "\uD83C\uDDF7\uD83C\uDDFA Русский",
+            "uz": "\uD83C\uDDFA\uD83C\uDDFF O'zbek",
+            "kk": "\uD83C\uDDF0\uD83C\uDDFF Қазақ",
+            "backtomenu": "↩️ Мәзірге оралу"
+        },
+        "downloadapp_kb": {
+            "backtomenu": "↩️ Мәзірге оралу"
+        },
+        "mirror_kb": {
+            "currentmirror":{
+                "text": "Ағымдағы айна",
+                "web_app": {
+                    "url": "https://bet2fun.me"
+                }
+            },
+            "backtomenu": "↩️ Мәзірге оралу"
+        },
+        "register_kb": {
+            "registration": {
+                "text": "Тіркеу",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            },
+            "backtomenu": "↩️ Мәзірге оралу"
+        },
+        "stikers_kb": {
+            "backtomenu": "↩️ Мәзірге оралу"
+        },
+        "deposit_kb": {
+            "deposit": {
+                "text": "Депозит",
+                "web_app": {
+                    "url": "https://primefansport.cc/slot-world-austria/"
+                }
+            },
+            "backtomenu": "↩️ Мәзірге оралу"
         }
     }
 }

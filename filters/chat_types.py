@@ -72,4 +72,4 @@ class OnChat(Filter):
 
     async def __call__(self, message: types.Message, bot: Bot) -> bool:
         global my_onchat_list
-        return message.from_user.id in my_onchat_list
+        return message.chat.id in my_onchat_list

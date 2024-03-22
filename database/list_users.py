@@ -23,9 +23,22 @@ users_chat_on_id_invert = {}
 admins_on = []
 users_chat_history = {}
 chat_id_number = {}
-hour_time = 12
 list_users_update = {}
 list_users_id_message = {}
+
+hour_time_ua = 12
+hour_time_ru = 12
+hour_time_en = 10
+hour_time_pt = 10
+hour_time_uz = 10
+hour_time_kz = 10
+
+count_ua = 0
+count_ru = 0
+count_en = 0
+count_pt = 0
+count_kz = 0
+count_uz = 0
 
 
 botlang = {}
@@ -66,13 +79,81 @@ async def user_set_update(user_id, datatime):
     list_users_update[user_id] = datatime
 
 
-async def get_hour_send_post():
-    global hour_time
-    return hour_time
+async def get_hour_send_post(region):
+    if region == 'ua':
+        return hour_time_ua
+    if region == 'ru':
+        return hour_time_ru
+    if region == 'en':
+        return hour_time_en
+    if region == 'pt':
+        return hour_time_pt
+    if region == 'uz':
+        return hour_time_uz
+    if region == 'kz':
+        return hour_time_kz
 
-async def edit_hour_time(time):
-    global hour_time
-    hour_time = time
+
+async def edit_hour_time(time, region):
+    global hour_time_ua
+    global hour_time_ru
+    global hour_time_en
+    global hour_time_pt
+    global hour_time_uz
+    global hour_time_kz
+    if region == 'ua':
+        hour_time_ua = time
+    if region == 'ru':
+        hour_time_ru = time
+    if region == 'en':
+        hour_time_en = time
+    if region == 'pt':
+        hour_time_pt = time
+    if region == 'uz':
+        hour_time_uz = time
+    if region == 'kz':
+        hour_time_kz = time
+
+
+
+
+async def get_count_region(region):
+    if region == 'ua':
+        return count_ua
+    if region == 'ru':
+        return count_ru
+    if region == 'en':
+        return count_en
+    if region == 'pt':
+        return count_pt
+    if region == 'uz':
+        return count_uz
+    if region == 'kz':
+        return count_kz
+
+
+async def edit_count_region(count, region):
+    global count_ua
+    global count_ru
+    global count_en
+    global count_pt
+    global count_kz
+    global count_uz
+    if region == 'ua':
+        count_ua = count
+    if region == 'ru':
+        count_ru = count
+    if region == 'en':
+        count_en = count
+    if region == 'pt':
+        count_pt = count
+    if region == 'uz':
+        count_uz = count
+    if region == 'kz':
+        count_kz = count
+
+
+
 
 async def get_chat_id_number():
     global chat_id_number

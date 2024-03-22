@@ -3,7 +3,7 @@ version: "3"
 services:
   web:
     build: .
-    container_name: dnl
+    container_name: fsbot
     command: python main.py
     ports:
       - 80:80

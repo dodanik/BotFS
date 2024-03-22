@@ -18,7 +18,7 @@ chat_router.message.filter(ChatTypesFilter(['private']), OnChat())
 
 @chat_router.message(StateFilter(None), (F.text.lower() == '❌ завершить чат') | (F.text.lower() == '❌ завершити чат') | (F.text.lower() == '❌ chat end'))
 async def chatmessage(message: types.Message, bot: Bot):
-    await my_list_chat_id_remove(message.from_user.id)
+    await my_list_chat_id_remove(message.chat.id)
     message_exists = await get_history_chat(message.chat.id)
     if message_exists:
         await update_status_chat(message.chat.id)

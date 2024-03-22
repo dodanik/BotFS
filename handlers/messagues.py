@@ -20,7 +20,6 @@ async def get_headers():
 
 async def search_user(message):
     user_contact = await get_users_contact()
-    print(user_contact)
     if str(message.from_user.id) not in user_contact:
         from_user_id = "user_" + str(message.from_user.id)
         create_contact = {
@@ -30,8 +29,8 @@ async def search_user(message):
             "createdFrom": "telegram",
             "tags": [
                 {
-                    "name": "TG79",
-                    "color": "#4B0082"
+                    "name": "TG110",
+                    "color": "#008304"
                 }
             ]
         }

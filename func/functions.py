@@ -1,6 +1,7 @@
 import asyncio
 from datetime import datetime, timedelta
 
+import aiogram
 import aiohttp
 from aiogram import types, exceptions, Bot
 from aiogram.enums import MenuButtonType, parse_mode
@@ -10,9 +11,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from database.list_users import get_users_chat_on_id, get_history_chat, add_to_history_chat, get_admins_on, \
     get_chat_id_number, remove_user_chat_on_id, user_get_update, user_set_update, get_chat_id_number_user, \
-    get_list_users_id_message, remove_to_list_users_id_message
+    get_list_users_id_message, remove_to_list_users_id_message, remove_to_history_chat
 from database.models import Users
 from database.orm_query import orm_get_post, update_user_time
+from filters.chat_types import my_list_chat_id_remove
 from handlers.messagues import get_headers
 from kb.keyboard import create_keyboard, chat_close_server_message
 
@@ -21,16 +23,22 @@ async def set_web_app_button_text(language_code, chatid, bot):
     if language_code:
         if language_code == 'ru':
             button_text = 'Играть'
-            url = 'https://bet2.fun'
+            url = 'https://fan-sport.com/'
         elif language_code == 'uk':
             button_text = 'Грати'
-            url = 'https://bet2.fun'
+            url = 'https://fan-sport.com/'
+        elif language_code == 'pt':
+            button_text = 'Jogar'
+            url = 'https://fan-sport.com/'
+        elif language_code == 'kk':
+            button_text = 'Ойнау'
+            url = 'https://fan-sport.com/'
         elif language_code == 'en':
             button_text = 'Play'
-            url = 'https://bet2.fun'
+            url = 'https://fan-sport.com/'
         else:
             button_text = 'Play'
-            url = 'https://bet2.fun'  # По умолчанию используем английский язык и стандартный URL
+            url = 'https://fan-sport.com/'  # По умолчанию используем английский язык и стандартный URL
 
         await bot.set_chat_menu_button(chatid,
                                        menu_button=MenuButtonWebApp(
@@ -78,8 +86,7 @@ async def send_message_chat(bot):
                                                         if response_status.status == 200:
                                                             json_response_status = await response_status.json()
                                                             if json_response_status["status"] == "closed":
-                                                                await bot.send_message(chat_id, f'<b><i>{await chat_close_server_message(await get_chat_id_number_user(chat_id))}</i></b>', parse_mode="HTML")
-                                                                await add_to_history_chat(chat_id, item['id'])
+                                                                await close_chat(bot, chat_id)
                                                             else:
                                                                 await add_to_history_chat(chat_id, item['id'])
                                                         else:
@@ -129,7 +136,31 @@ async def delete_message(bot):
                 for value in values[:-1]:
                     mess_id_del.append(value)
                 if mess_id_del:
-                    await bot.delete_messages(key, mess_id_del)
-                    await remove_to_list_users_id_message(key, mess_id_del)
+                    try:
+                        await bot.delete_messages(key, mess_id_del)
+                        await remove_to_list_users_id_message(key, mess_id_del)
+                    except aiogram.exceptions.TelegramBadRequest as e:
+                        if "message can't be deleted for everyone" in str(e):
+                            print(
+                                "Received TelegramBadRequest: message can't be deleted for everyone\n Сообщение старше 48 часов!")
+                            await remove_to_list_users_id_message(key, mess_id_del)
+                        else:
+                            error_message = f"An error occurred while deleting messages for chat {key}: {e}"
+                            print(error_message)
+                    except Exception as ex:
+                        error_message = f"An unexpected error occurred: {ex}"
+                        print(error_message)
         else:
             continue
+
+
+async def close_chat(bot, chat_id):
+    await bot.send_message(chat_id,
+                           f'<b><i>{await chat_close_server_message(await get_chat_id_number_user(chat_id))}</i></b>',reply_markup=create_keyboard(f'{await get_chat_id_number_user(chat_id)}', 'menu_kb', 2, 2, 2,
+                                                      2).as_markup(
+                             resize_keyboard=True,
+                             input_field_placeholder='Welcome!'),
+                           parse_mode="HTML")
+    await remove_user_chat_on_id(chat_id)
+    await my_list_chat_id_remove(chat_id)
+    await remove_to_history_chat(chat_id)

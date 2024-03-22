@@ -7,8 +7,8 @@ class Base(DeclarativeBase):
     updated: Mapped[DateTime] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
 
 
-class Post(Base):
-    __tablename__ = 'post'
+class PostUa(Base):
+    __tablename__ = 'post_ua'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     description: Mapped[str] = mapped_column(Text, nullable=False)
@@ -16,6 +16,65 @@ class Post(Base):
     image: Mapped[str] = mapped_column(String(150), nullable=False)
     type: Mapped[str] = mapped_column(String(150), nullable=False)
     button: Mapped[str] = mapped_column(String(150), nullable=False)
+
+
+class PostRu(Base):
+    __tablename__ = 'post_ru'
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+    link: Mapped[str] = mapped_column(Text)
+    image: Mapped[str] = mapped_column(String(150), nullable=False)
+    type: Mapped[str] = mapped_column(String(150), nullable=False)
+    button: Mapped[str] = mapped_column(String(150), nullable=False)
+
+
+
+class PostPt(Base):
+    __tablename__ = 'post_pt'
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+    link: Mapped[str] = mapped_column(Text)
+    image: Mapped[str] = mapped_column(String(150), nullable=False)
+    type: Mapped[str] = mapped_column(String(150), nullable=False)
+    button: Mapped[str] = mapped_column(String(150), nullable=False)
+
+
+class PostEn(Base):
+    __tablename__ = 'post_en'
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+    link: Mapped[str] = mapped_column(Text)
+    image: Mapped[str] = mapped_column(String(150), nullable=False)
+    type: Mapped[str] = mapped_column(String(150), nullable=False)
+    button: Mapped[str] = mapped_column(String(150), nullable=False)
+
+
+
+class PostUz(Base):
+    __tablename__ = 'post_uz'
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+    link: Mapped[str] = mapped_column(Text)
+    image: Mapped[str] = mapped_column(String(150), nullable=False)
+    type: Mapped[str] = mapped_column(String(150), nullable=False)
+    button: Mapped[str] = mapped_column(String(150), nullable=False)
+
+
+
+class PostKz(Base):
+    __tablename__ = 'post_kz'
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+    link: Mapped[str] = mapped_column(Text)
+    image: Mapped[str] = mapped_column(String(150), nullable=False)
+    type: Mapped[str] = mapped_column(String(150), nullable=False)
+    button: Mapped[str] = mapped_column(String(150), nullable=False)
+
 
 
 class Users(Base):

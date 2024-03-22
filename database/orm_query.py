@@ -1,15 +1,15 @@
 from datetime import datetime
 
-from sqlalchemy import select, update, delete
+from sqlalchemy import select, update
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
-from database.models import Post, Users
+from database.models import Users
 
 
-async def orm_add_post(session: AsyncSession, data: dict):
-    obj = Post(
+async def orm_add_post(session: AsyncSession, class_table, data: dict):
+    obj = class_table(
         description=data['description'],
         link=data['link'],
         image=data['image'],
@@ -18,6 +18,31 @@ async def orm_add_post(session: AsyncSession, data: dict):
     )
     session.add(obj)
     await session.commit()
+
+
+async def orm_delete_post(session: AsyncSession, class_table, post_id: int):
+    post = await session.get(class_table, post_id)
+    if post:
+        await session.delete(post)
+        await session.commit()
+        return True
+    else:
+        return False
+
+
+async def orm_get_post(session: AsyncSession, class_table):
+    try:
+        query = select(class_table)
+        result = await session.execute(query)
+        return result.scalars().all()
+    except Exception as e:
+        print(f"Произошла ошибка при выполнении запроса: {e}")
+
+
+
+
+
+
 
 
 async def orm_add_users(session: AsyncSession, data: dict):
@@ -35,16 +60,6 @@ async def orm_add_users(session: AsyncSession, data: dict):
     await session.commit()
 
 
-async def orm_delete_post(session: AsyncSession, post_id: int):
-    post = await session.get(Post, post_id)
-    if post:
-        await session.delete(post)
-        await session.commit()
-        return True
-    else:
-        return False
-
-
 async def check_user_exists(session: AsyncSession, userid):
     query = select(Users).where(Users.userid == userid)
     result = await session.execute(query)
@@ -53,15 +68,6 @@ async def check_user_exists(session: AsyncSession, userid):
         return False
     else:
         return True
-
-
-async def orm_get_post(session: AsyncSession):
-    try:
-        query = select(Post)
-        result = await session.execute(query)
-        return result.scalars().all()
-    except Exception as e:
-        print(f"Произошла ошибка при выполнении запроса: {e}")
 
 
 async def orm_get_users(session: AsyncSession):

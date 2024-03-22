@@ -40,9 +40,9 @@ async def insert_users_from_dict(conn, users_dict):
 
 async def delete_database():
     try:
-        os.remove("data_dump.db")
-        print("База данных data_dump.db успешно удалена.")
+        os.remove("data_dump_fs.db")
+        print("База данных data_dump_fs.db успешно удалена.")
     except FileNotFoundError:
         print("База данных data_dump.db не существует.")
     except Exception as e:
-        print(f"Произошла ошибка при удалении базы данных data_dump.db: {e}")
+        print(f"Произошла ошибка при удалении базы данных data_dump_fs.db: {e}")
