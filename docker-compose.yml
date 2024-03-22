@@ -6,7 +6,7 @@ services:
     container_name: fsbot
     command: python main.py
     ports:
-      - 80:80
+      - 8443:443
     volumes:
       - ./:/app
     restart: always
