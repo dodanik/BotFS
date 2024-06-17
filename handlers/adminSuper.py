@@ -58,7 +58,7 @@ class AddPostCustom(StatesGroup):
     check = State()
 
 
-class RemovePost(StatesGroup):
+class RemovePostCustom(StatesGroup):
     id = State()
     region = State()
 
@@ -209,11 +209,11 @@ async def remove_post(message: types.Message, state: FSMContext):
         "Select the language of the region the posts you want to delete:", reply_markup=del_post_kb.as_markup(
             resize_keyboard=True)
     )
-    await state.set_state(RemovePost.region)
+    await state.set_state(RemovePostCustom.region)
 
 
 
-@admin_super.message(RemovePost.region, F.text)
+@admin_super.message(RemovePostCustom.region, F.text)
 async def remove_post_button(message: types.Message, state: FSMContext, session: AsyncSession, bot: Bot):
     if message.text == 'Del post RU':
         await state.update_data(region='ru')
@@ -270,17 +270,17 @@ async def remove_post_button(message: types.Message, state: FSMContext, session:
             "Enter the ID of the post you want to delete:",
             reply_markup=admin_kb_cancel_sup.as_markup(resize_keyboard=True)
         )
-        await state.set_state(RemovePost.id)
+        await state.set_state(RemovePostCustom.id)
     else:
         await message.answer(
-            "There are no posts for this language yet.",
+            "There are no posts for this language yet Admin super.",
             reply_markup=del_post_kb.as_markup(resize_keyboard=True)
         )
-        await state.set_state(RemovePost.region)
+        await state.set_state(RemovePostCustom.region)
 
 
 
-@admin_super.message(RemovePost.id, F.text)
+@admin_super.message(RemovePostCustom.id, F.text)
 async def remove_post_button(message: types.Message, state: FSMContext, session: AsyncSession):
     data_region = await state.get_data()
     try:
