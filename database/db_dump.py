@@ -6,37 +6,43 @@ async def insert_users_from_dict(conn, users_dict):
     await conn.execute('''
         CREATE TABLE IF NOT EXISTS users (
             userid INTEGER PRIMARY KEY,
+            chatid INTEGER NOT NULL,
             username TEXT,
             firstname TEXT,
             lastname TEXT,
             language TEXT NOT NULL,
+            phonenumber TEXT,
+            bonussport BOOLEAN,
+            bonuscasino BOOLEAN,
             created TEXT NOT NULL,
             updated TEXT NOT NULL
         )
     ''')
 
     sql_query = '''
-        INSERT INTO users (userid, username, firstname, lastname, language, created, updated) 
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO users (userid, chatid, username, firstname, lastname, language, phonenumber, bonussport, bonuscasino, created, updated) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     '''
 
     # Проход по каждому элементу словаря и вставка его в базу данных
     for user in users_dict:
         userid = user.userid
+        chatid = user.chatid
         username = user.username
         firstname = user.firstname
         lastname = user.lastname
         language = user.language
+        phonenumber = user.phonenumber
+        bonussport = user.bonussport
+        bonuscasino = user.bonuscasino
         created = user.created
         updated = user.updated
 
         # Выполнение SQL-запроса
-        async with conn.execute(sql_query, (userid, username, firstname, lastname, language, created, updated)) as cursor:
-            pass
+        await conn.execute(sql_query, (userid, chatid, username, firstname, lastname, language, phonenumber, bonussport, bonuscasino, created, updated))
 
     # Подтверждение изменений
     await conn.commit()
-
 
 async def delete_database():
     try:

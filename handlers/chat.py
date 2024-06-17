@@ -16,7 +16,7 @@ chat_router.message.filter(ChatTypesFilter(['private']), OnChat())
 
 
 
-@chat_router.message(StateFilter(None), (F.text.lower() == '❌ завершить чат') | (F.text.lower() == '❌ завершити чат') | (F.text.lower() == '❌ chat end'))
+@chat_router.message(StateFilter(None), (F.text.lower() == '❌ завершить чат') | (F.text.lower() == '❌ чатты аяқтау') | (F.text.lower() == '❌ chat end'))
 async def chatmessage(message: types.Message, bot: Bot):
     await my_list_chat_id_remove(message.chat.id)
     message_exists = await get_history_chat(message.chat.id)
@@ -24,7 +24,7 @@ async def chatmessage(message: types.Message, bot: Bot):
         await update_status_chat(message.chat.id)
         await remove_to_history_chat(message.chat.id)
     botlang = await get_botlang()
-    await message.answer(f'{await chatmessage_callback_kb(botlang[message.from_user.id])}', reply_markup=create_keyboard(f'{botlang[message.from_user.id]}', 'menu_kb', 2, 2, 2,2).as_markup(
+    await message.answer(f'{await chatmessage_callback_kb(botlang[message.from_user.id])}', reply_markup=create_keyboard(f'{botlang[message.from_user.id]}', 'menu_kb', message.from_user.id, 2, 2, 2, 2).as_markup(
                              resize_keyboard=True,
                              input_field_placeholder='Welcome!'))
     await remove_user_chat_on_id(message.chat.id)

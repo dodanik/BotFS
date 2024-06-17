@@ -3,6 +3,14 @@ import aiofiles
 import ujson
 from aiogram.types import FSInputFile
 
+with open('mirror_link.txt', 'r') as fileMirror_link:
+    mirror_link = fileMirror_link.read()
+
+with open('promocodeSports.txt', 'r') as filePromocodeSports:
+    promocodeSports = filePromocodeSports.read()
+
+with open('promocodeCasino.txt', 'r') as filePromocodeCasino:
+    promocodeCasino = filePromocodeCasino.read()
 
 
 with open("data_users_language.json", "r") as jsonlng:
@@ -12,8 +20,30 @@ with open("data_users_language.json", "r") as jsonlng:
 
 with open("users_contact.json", "r") as file:
     users_contact = ujson.load(file)
+
 with open("chat_id_number.json", "r") as file_chat_id_number:
     chat_id_number_json = ujson.load(file_chat_id_number)
+
+try:
+    with open("user_vip_list.json", "r") as user_vip_list_file:
+        user_vip_list = ujson.load(user_vip_list_file)
+except (FileNotFoundError, ValueError):
+    user_vip_list = []
+
+
+try:
+    with open("user_neactive_2_days_send_post_list.json", "r") as user_neactive_2_days_send_post_list_file:
+        user_neactive_2_days_send_post_list = ujson.load(user_neactive_2_days_send_post_list_file)
+except (FileNotFoundError, ValueError):
+    user_neactive_2_days_send_post_list = []
+
+
+try:
+    with open("user_neactive_5_days_send_post_list.json", "r") as user_neactive_5_days_send_post_list_file:
+        user_neactive_5_days_send_post_list = ujson.load(user_neactive_5_days_send_post_list_file)
+except (FileNotFoundError, ValueError):
+    user_neactive_5_days_send_post_list = []
+
 
 
 
@@ -26,12 +56,17 @@ chat_id_number = {}
 list_users_update = {}
 list_users_id_message = {}
 
-hour_time_ua = 12
-hour_time_ru = 12
-hour_time_en = 10
-hour_time_pt = 10
-hour_time_uz = 10
-hour_time_kz = 10
+list_last_post_id_ru = {}
+list_last_post_id_en = {}
+list_last_post_id_kz = {}
+
+list_last_vip_post_id_ru = {}
+list_last_vip_post_id_en = {}
+list_last_vip_post_id_kz = {}
+
+
+
+hour_time = 10
 
 count_ua = 0
 count_ru = 0
@@ -39,6 +74,13 @@ count_en = 0
 count_pt = 0
 count_kz = 0
 count_uz = 0
+
+count_custom_kz = 0
+count_custom_ru = 0
+count_custom_en = 0
+
+
+
 
 
 botlang = {}
@@ -48,6 +90,94 @@ for key, value in botlang_json.items():
 
 for key, value in chat_id_number_json.items():
     chat_id_number[int(key)] = value
+
+
+async def get_link_mirror():
+    global mirror_link
+    return mirror_link
+
+
+async def set_link_mirror(link):
+    global mirror_link
+    mirror_link = link
+    with open('mirror_link.txt', 'w') as fileMirror:
+        fileMirror.write(mirror_link)
+
+
+
+def get_user_vip_list():
+    global user_vip_list
+    return user_vip_list
+
+
+async def add_user_vip_list(user_id: int):
+    global user_vip_list
+    # Добавление нового объекта в список
+    user_vip_list.append(user_id)
+
+
+async def save_user_vip_list():
+    global user_vip_list
+    # Запись обновленного словаря в файл
+    with open("user_vip_list.json", "w") as user_vip_list_file_w:
+        ujson.dump(user_vip_list, user_vip_list_file_w, indent=4)
+
+
+async def get_user_neactive_2_days_send_post_list():
+    global user_neactive_2_days_send_post_list
+    return user_neactive_2_days_send_post_list
+
+async def add_user_neactive_2_days_send_post_list(user_id: int):
+    global user_neactive_2_days_send_post_list
+    # Добавление нового объекта в список
+    user_neactive_2_days_send_post_list.append(user_id)
+
+
+
+async def get_user_neactive_5_days_send_post_list():
+    global user_neactive_5_days_send_post_list
+    return user_neactive_5_days_send_post_list
+
+async def add_user_neactive_5_days_send_post_list(user_id: int):
+    global user_neactive_5_days_send_post_list
+    # Добавление нового объекта в список
+    user_neactive_5_days_send_post_list.append(user_id)
+
+
+
+async def save_neactive_list():
+    global user_neactive_2_days_send_post_list
+    global user_neactive_5_days_send_post_list
+
+    # Запись обновленного словаря в файл
+    with open("global user_neactive_5_days_send_post_list.json", "w") as user_neactive_5_days_send_post_list_file_w:
+        ujson.dump(user_neactive_5_days_send_post_list, user_neactive_5_days_send_post_list_file_w, indent=4)
+
+    with open("global user_neactive_2_days_send_post_list.json", "w") as user_neactive_2_days_send_post_list_file_w:
+        ujson.dump(user_neactive_2_days_send_post_list, user_neactive_2_days_send_post_list_file_w, indent=4)
+
+
+
+async def get_promocode_sports():
+    global promocodeSports
+    return promocodeSports
+
+async def get_promocode_casino():
+    global promocodeCasino
+    return promocodeCasino
+
+
+async def set_promocode_sports(new_promocode):
+    global promocodeSports
+    promocodeSports = new_promocode
+    with open('promocodeSports.txt', 'w') as filePromocodeSports:
+        filePromocodeSports.write(promocodeSports)
+
+async def set_promocode_casino(new_promocode):
+    global promocodeCasino
+    promocodeCasino = new_promocode
+    with open('promocodeCasino.txt', 'w') as filePromocodeCasino:
+        filePromocodeCasino.write(promocodeCasino)
 
 
 async def get_list_users_id_message():
@@ -79,40 +209,88 @@ async def user_set_update(user_id, datatime):
     list_users_update[user_id] = datatime
 
 
-async def get_hour_send_post(region):
-    if region == 'ua':
-        return hour_time_ua
-    if region == 'ru':
-        return hour_time_ru
-    if region == 'en':
-        return hour_time_en
-    if region == 'pt':
-        return hour_time_pt
-    if region == 'uz':
-        return hour_time_uz
-    if region == 'kz':
-        return hour_time_kz
+async def get_hour_send_post():
+    global hour_time
+    return hour_time
 
 
-async def edit_hour_time(time, region):
-    global hour_time_ua
-    global hour_time_ru
-    global hour_time_en
-    global hour_time_pt
-    global hour_time_uz
-    global hour_time_kz
-    if region == 'ua':
-        hour_time_ua = time
+
+async def edit_hour_time(time):
+    global hour_time
+    hour_time = time
+
+
+async def get_list_last_post_id(region):
+    global list_last_post_id_ru
+    global list_last_post_id_en
+    global list_last_post_id_kz
     if region == 'ru':
-        hour_time_ru = time
+        return list_last_post_id_ru
     if region == 'en':
-        hour_time_en = time
-    if region == 'pt':
-        hour_time_pt = time
-    if region == 'uz':
-        hour_time_uz = time
-    if region == 'kz':
-        hour_time_kz = time
+        return list_last_post_id_en
+    if region == 'kk':
+        return list_last_post_id_kz
+
+
+async def edit_list_last_post_id(chat_id, msg_id, region):
+    global list_last_post_id_ru
+    global list_last_post_id_en
+    global list_last_post_id_kz
+    if region == 'ru':
+        list_last_post_id_ru[chat_id] = msg_id
+    if region == 'en':
+        list_last_post_id_en[chat_id] = msg_id
+    if region == 'kk':
+        list_last_post_id_kz[chat_id] = msg_id
+
+
+async def clear_list_last_post_id(region):
+    global list_last_post_id_ru
+    global list_last_post_id_en
+    global list_last_post_id_kz
+    if region == 'ru':
+        list_last_post_id_ru = {}
+    if region == 'en':
+        list_last_post_id_en = {}
+    if region == 'kk':
+        list_last_post_id_kz = {}
+
+
+
+async def get_list_vip_last_post_id(region):
+    global list_last_vip_post_id_ru
+    global list_last_vip_post_id_en
+    global list_last_vip_post_id_kz
+    if region == 'ru':
+        return list_last_vip_post_id_ru
+    if region == 'en':
+        return list_last_vip_post_id_en
+    if region == 'kk':
+        return list_last_vip_post_id_kz
+
+
+async def edit_list_vip_last_post_id(chat_id, msg_id, region):
+    global list_last_vip_post_id_ru
+    global list_last_vip_post_id_en
+    global list_last_vip_post_id_kz
+    if region == 'ru':
+        list_last_vip_post_id_ru[chat_id] = msg_id
+    if region == 'en':
+        list_last_vip_post_id_en[chat_id] = msg_id
+    if region == 'kk':
+        list_last_vip_post_id_kz[chat_id] = msg_id
+
+
+async def clear_list_vip_last_post_id(region):
+    global list_last_vip_post_id_ru
+    global list_last_vip_post_id_en
+    global list_last_vip_post_id_kz
+    if region == 'ru':
+        list_last_vip_post_id_ru = {}
+    if region == 'en':
+        list_last_vip_post_id_en = {}
+    if region == 'kk':
+        list_last_vip_post_id_kz = {}
 
 
 
@@ -153,6 +331,26 @@ async def edit_count_region(count, region):
         count_kz = count
 
 
+
+async def get_count_custom_region(region):
+    if region == 'ru':
+        return count_custom_ru
+    if region == 'en':
+        return count_custom_en
+    if region == 'kz':
+        return count_custom_kz
+
+
+async def edit_count_custom_region(count, region):
+    global count_custom_ru
+    global count_custom_en
+    global count_custom_kz
+    if region == 'ru':
+        count_custom_ru = count
+    if region == 'en':
+        count_custom_en = count
+    if region == 'kz':
+        count_custom_kz = count
 
 
 async def get_chat_id_number():
@@ -272,11 +470,21 @@ async def get_user_number_chat_invert(chat_id_hp):
 async def remove_user_chat_on_id(user_chat_id):
     global users_chat_on_id
     global users_chat_on_id_invert
+
+    # Проверка на наличие user_chat_id в словаре users_chat_on_id и удаление, если существует
+    if user_chat_id in users_chat_on_id:
+        del users_chat_on_id[user_chat_id]
+
+    # Создаем список ключей для удаления
     keys_to_remove = []
-    del users_chat_on_id[user_chat_id]
+
+    # Проходим по всем элементам словаря users_chat_on_id_invert
     for key, value in users_chat_on_id_invert.items():
+        # Если значение равно user_chat_id, добавляем ключ в список для удаления
         if value == user_chat_id:
             keys_to_remove.append(key)
+
+    # Удаляем все ключи из списка keys_to_remove из словаря users_chat_on_id_invert
     for key in keys_to_remove:
         del users_chat_on_id_invert[key]
 
@@ -295,8 +503,8 @@ async def add_to_history_chat(chat_id, number_messague):
 
 async def remove_to_history_chat(chat_id):
     global users_chat_history
-    try:
+    if chat_id in users_chat_history:
         del users_chat_history[chat_id]
-    except KeyError:
-        print(f"Ключ {chat_id} отсутствует в словаре.")
+
+
 

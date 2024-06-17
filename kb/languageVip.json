@@ -16,7 +16,7 @@
                 }
             },
             "stickerpack": "\uD83C\uDF81 Стикер пак",
-            "vip": "❌ VIP не активен",
+            "vip": "\uD83D\uDC51 VIP Активрован ✅",
             "back": "↩️ Назад"
         },
         "language_kb": {
@@ -52,7 +52,7 @@
                 }
             },
             "stickerpack": "\uD83C\uDF81 Sticker pack",
-            "vip": "❌ VIP is not active",
+            "vip": "\uD83D\uDC51 VIP Activated ✅",
             "back": "↩️ Back"
         },
         "language_kb": {
@@ -88,7 +88,7 @@
                 }
             },
             "stickerpack": "\uD83C\uDF81 Стикерлер жинағы",
-            "vip": "❌ VIP белсендірілмеген",
+            "vip": "\uD83D\uDC51 VIP ✅",
             "back": "↩️ Артқа"
         },
         "language_kb": {

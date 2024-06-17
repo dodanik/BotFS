@@ -5,8 +5,10 @@ from aiogram import Bot, types
 with open("admin_list.json", "r") as file:
     admins = ujson.load(file)
 
+my_vip_state_list: list[int] = []
 my_onchat_list: list[int] = []
 my_admins_list: list[int] = admins
+my_admins_super_list: list[int] = [5233415694]
 
 
 async def my_admins_list_add(id):
@@ -44,7 +46,19 @@ async def my_list_chat_id_add(id):
 
 async def my_list_chat_id_remove(id):
     global my_onchat_list
-    my_onchat_list.remove(id)
+    if id in my_onchat_list:
+        my_onchat_list.remove(id)
+
+
+async def my_vip_state_list_id_add(id):
+    global my_vip_state_list
+    my_vip_state_list.append(id)
+
+
+
+async def my_vip_state_list_id_remove(id):
+    global my_vip_state_list
+    my_vip_state_list.remove(id)
 
 
 
@@ -73,3 +87,21 @@ class OnChat(Filter):
     async def __call__(self, message: types.Message, bot: Bot) -> bool:
         global my_onchat_list
         return message.chat.id in my_onchat_list
+
+
+class OnStateChanges(Filter):
+    def __init__(self) -> None:
+        pass
+
+    async def __call__(self, message: types.Message, bot: Bot) -> bool:
+        global my_vip_state_list
+        return message.chat.id in my_vip_state_list
+
+
+class IsAdminSuper(Filter):
+    def __init__(self) -> None:
+        pass
+
+    async def __call__(self, message: types.Message, bot: Bot) -> bool:
+        global my_admins_super_list
+        return message.from_user.id in my_admins_super_list

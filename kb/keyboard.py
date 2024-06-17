@@ -1,14 +1,26 @@
 import orjson
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, WebAppInfo, ReplyKeyboardRemove
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, WebAppInfo, ReplyKeyboardRemove, InlineKeyboardButton, \
+    InlineKeyboardMarkup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
+from database.list_users import get_user_vip_list, get_promocode_sports, get_promocode_casino
+
 with open("kb/language.json", "rb") as json:
-    data = orjson.loads(json.read())
+    lengData = orjson.loads(json.read())
+
+with open("kb/languageVip.json", "rb") as jsonVip:
+    lengDataVip = orjson.loads(jsonVip.read())
 
 
-def create_keyboard(language, keyboard_name, *adjust_params):
+def create_keyboard(language, keyboard_name, userId=False, *adjust_params):
+    user_vip_list = get_user_vip_list()
     # Загрузка данных из файла JSON
-    global data
+    if userId and userId in user_vip_list:
+        data = lengDataVip
+    else:
+        data = lengData
+
+
 
     # Получаем данные для клавиатуры из JSON файла
     keyboard_data = data.get(language, {}).get(keyboard_name, {})
@@ -41,76 +53,101 @@ def create_keyboard(language, keyboard_name, *adjust_params):
 admin_kb = ReplyKeyboardBuilder()
 admin_kb.add(
     KeyboardButton(text='Send post NOW'),
+    KeyboardButton(text='Delete last post'),
+    KeyboardButton(text='Send post VIP'),
+    KeyboardButton(text='Delete last VIP post'),
     KeyboardButton(text='Add post'),
     KeyboardButton(text='Delete post'),
     KeyboardButton(text='Add admin'),
     KeyboardButton(text='Delete admin'),
     KeyboardButton(text='List of users'),
     KeyboardButton(text='Get Database FILE'),
+    KeyboardButton(text='Edit link Mirror'),
+    KeyboardButton(text='Edit Promo Code'),
     KeyboardButton(text='Edit post sending times'),
     KeyboardButton(text='Back to menu')
 )
-admin_kb.adjust(1, 2, 2, 2, 1, 1)
+admin_kb.adjust(2, 2, 2, 2, 2, 2, 1, 1)
 
 
 add_post_kb = ReplyKeyboardBuilder()
 add_post_kb.add(
-    KeyboardButton(text='Post UA'),
     KeyboardButton(text='Post RU'),
     KeyboardButton(text='Post EN'),
-    KeyboardButton(text='Post PT'),
-    KeyboardButton(text='Post UZ'),
     KeyboardButton(text='Post KZ'),
     KeyboardButton(text='Cancel')
 )
-add_post_kb.adjust(2, 2, 2, 1)
+add_post_kb.adjust(1, 1, 1, 1)
 
 
 del_post_kb = ReplyKeyboardBuilder()
 del_post_kb.add(
-    KeyboardButton(text='Del post UA'),
     KeyboardButton(text='Del post RU'),
     KeyboardButton(text='Del post EN'),
-    KeyboardButton(text='Del post PT'),
-    KeyboardButton(text='Del post UZ'),
     KeyboardButton(text='Del post KZ'),
     KeyboardButton(text='Cancel')
 )
-del_post_kb.adjust(2, 2, 2, 1)
+del_post_kb.adjust(1, 1, 1, 1)
 
 
 send_post_kb_region = ReplyKeyboardBuilder()
 send_post_kb_region.add(
-    KeyboardButton(text='Send UA'),
     KeyboardButton(text='Send RU'),
     KeyboardButton(text='Send EN'),
-    KeyboardButton(text='Send PT'),
-    KeyboardButton(text='Send UZ'),
     KeyboardButton(text='Send KZ'),
     KeyboardButton(text='Cancel')
 )
-send_post_kb_region.adjust(2, 2, 2, 1)
+send_post_kb_region.adjust(1, 1, 1, 1)
 
-
-edit_time_post_kb = ReplyKeyboardBuilder()
-edit_time_post_kb.add(
-    KeyboardButton(text='Edit time post UA'),
-    KeyboardButton(text='Edit time post RU'),
-    KeyboardButton(text='Edit time post EN'),
-    KeyboardButton(text='Edit time post PT'),
-    KeyboardButton(text='Edit time post UZ'),
-    KeyboardButton(text='Edit time post KZ'),
+delete_send_post_kb_mow_region = ReplyKeyboardBuilder()
+delete_send_post_kb_mow_region.add(
+    KeyboardButton(text='Delete RU'),
+    KeyboardButton(text='Delete EN'),
+    KeyboardButton(text='Delete KZ'),
     KeyboardButton(text='Cancel')
 )
-edit_time_post_kb.adjust(2, 2, 2, 1)
+delete_send_post_kb_mow_region.adjust(1, 1, 1, 1)
 
 
 
+
+
+
+send_post_kb_vip = ReplyKeyboardBuilder()
+send_post_kb_vip.add(
+    KeyboardButton(text='Send Users Bonus Sports'),
+    KeyboardButton(text='Send Users Bonus Casino'),
+    KeyboardButton(text='Send Users VIP All'),
+    KeyboardButton(text='Cancel')
+)
+send_post_kb_vip.adjust(1, 1, 1, 1)
+
+
+post_deletion_confirmation = ReplyKeyboardBuilder()
+post_deletion_confirmation.add(
+    KeyboardButton(text='Yes'),
+    KeyboardButton(text='No'),
+    KeyboardButton(text='Cancel')
+)
+post_deletion_confirmation.adjust(2, 1)
+
+
+
+edit_promo_code = ReplyKeyboardBuilder()
+edit_promo_code.add(
+    KeyboardButton(text='Edit FREEBET'),
+    KeyboardButton(text='Edit FREESPINS'),
+    KeyboardButton(text='Cancel')
+)
+edit_promo_code.adjust(2, 1)
 
 
 
 admin_kb_cancel = ReplyKeyboardBuilder()
 admin_kb_cancel.add(KeyboardButton(text='Cancel'))
+
+admin_kb_cancel_sup = ReplyKeyboardBuilder()
+admin_kb_cancel_sup.add(KeyboardButton(text='CancelSup'))
 
 send_post_kb = ReplyKeyboardBuilder()
 send_post_kb.add(KeyboardButton(text='Send'), KeyboardButton(text='Cancel'))
@@ -120,6 +157,20 @@ send_post_kb.adjust(1, 1)
 check_add_post_kb = ReplyKeyboardBuilder()
 check_add_post_kb.add(KeyboardButton(text='Add Post'), KeyboardButton(text='Cancel'))
 check_add_post_kb.adjust(1, 1)
+
+
+admin_super_kb = ReplyKeyboardBuilder()
+admin_super_kb.add(
+    KeyboardButton(text='Add post Custom'),
+    KeyboardButton(text='Delete post Custom'),
+    KeyboardButton(text='Back to menu')
+)
+admin_super_kb.adjust(2, 2, 2, 2, 2, 1, 1)
+
+
+
+
+
 
 
 async def chat_kb(lang):
@@ -265,19 +316,19 @@ async def sticker_pack_callback_kb(lang):
         return "Get a sticker pack from FANSPORT"
 
 
-async def deposit_pack_callback_kb(lang):
+async def vip_activate_kb(lang):
     if lang == "ru":
-        return "Делай депозит и погнали играть!!!"
+        return "Активируя VIP, ты получешь доступ к эксклюзивным рассылкам промокодов и других интересных персональных бонусов!!!\nДля активации поделись номером телефона и выбери бонус"
     elif lang == "uk":
         return "Роби депозит та погнали грати!"
     elif lang == "pt":
         return "Faça um depósito e vamos jogar!!"
     elif lang == "kk":
-        return "Депозит салыңыз және ойынға барайық!"
+        return "VIP белсендіру арқылы сіз промо-кодтардың эксклюзивті жөнелтілімдеріне және басқа да қызықты жеке бонустарға қол жеткізе аласыз!\nІске қосу үшін телефон нөміріңізді бөлісіп, бонус таңдаңыз"
     elif lang == "uz":
         return "Depozit qo'ying va o'ynashni boshlang!"
     else:
-        return "Make a deposit and let's go play!!!"
+        return "By activating VIP, you will get access to exclusive mailings of promotional codes and other interesting personal bonuses!!!\nTo activate, share your phone number and choose a bonus"
 
 
 async def chatmessage_callback_kb(lang):
@@ -352,3 +403,134 @@ async def chat_close_server_message(lang):
         return "CHAT OPERATOR TOMONIDAN TUGADI"
     else:
         return "CHAT ENDED BY OPERATOR"
+
+
+
+messages_activate_vip = {
+    'en': {
+        'choose_option': 'Choose a bonus:',
+        'share_phone': 'Share your phone number',
+        'bonus_casino': 'Bonuses for casino',
+        'bonus_sport': 'Bonuses for sports',
+        'activate_vip': 'Activate VIP',
+        'thanks_for_phone': 'Thank you for sharing your phone number.',
+        'bonus_chosen': 'You have chosen a bonus.',
+        'vip_activated': 'VIP activated.',
+        'complete_all_steps': 'Please select a bonus before activating VIP',
+        'refuse': 'Refuse VIP 🫤'
+    },
+    'ru': {
+        'choose_option': 'Выберите бонус:',
+        'share_phone': 'Поделиться номером телефона',
+        'bonus_casino': 'Бонусы на казино',
+        'bonus_sport': 'Бонусы на спорт',
+        'activate_vip': 'Активировать VIP',
+        'thanks_for_phone': 'Спасибо за предоставление номера телефона.',
+        'bonus_chosen': 'Вы выбрали бонус.',
+        'vip_activated': 'VIP активирован.',
+        'complete_all_steps': 'Пожалуйста,выберите бонус перед активацией VIP.',
+        'refuse': 'Отказаться от VIP 🫤'
+    },
+    'kk': {
+        'choose_option': 'Бонус таңдаңыз:',
+        'share_phone': 'Телефон нөміріңізбен бөлісіңіз',
+        'bonus_casino': 'Казино үшін бонустар',
+        'bonus_sport': 'Спорт үшін бонустар',
+        'activate_vip': 'VIP белсендіру',
+        'thanks_for_phone': 'Телефон нөміріңізбен бөліскеніңіз үшін рахмет.',
+        'bonus_chosen': 'Сіз бонус таңдадыңыз.',
+        'vip_activated': 'VIP белсендірілді.',
+        'complete_all_steps': 'VIP белсендіру алдында бонус таңдаңыз',
+        'refuse': 'VIP-тен бас тарту 🫤'
+    }
+}
+
+
+async def keyboard_vip_activate(lang, chosen_bonus=None):
+    bonus_casino_text = messages_activate_vip[lang]['bonus_casino']
+    bonus_sport_text = messages_activate_vip[lang]['bonus_sport']
+
+    if chosen_bonus == 'bonus_casino':
+        bonus_casino_text += ' ✅'
+    elif chosen_bonus == 'bonus_sport':
+        bonus_sport_text += ' ✅'
+
+    buttons = [
+        [InlineKeyboardButton(text=bonus_casino_text, callback_data='bonus_casino'),
+         InlineKeyboardButton(text=bonus_sport_text, callback_data='bonus_sport')],
+        [InlineKeyboardButton(text=messages_activate_vip[lang]['activate_vip'], callback_data='activate_vip')]
+    ]
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+def create_contact_request_keyboard(lang):
+    buttons = [
+        [KeyboardButton(text=messages_activate_vip[lang]['share_phone'], request_contact=True)],
+        [KeyboardButton(text=messages_activate_vip[lang]['refuse'])]
+    ]
+    return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
+
+def create_contact_request_keyboard_cancel(lang):
+    buttons = [
+        [KeyboardButton(text=messages_activate_vip[lang]['refuse'])]
+    ]
+    return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
+
+
+
+
+
+
+
+
+registration_kb = {
+    "kk": {
+        "casino": {
+            "text": "Казино Бонусы",
+            "url": "https://promo.fan-sport.tech/kz-casino-rg/?tag=d_3493582m_86084c_&promocode={promocode}"
+        },
+        "sport": {
+            "text": "Бонус Спорты",
+            "url": "https://promo.fan-sport.tech/kz-sport-rg/?tag=d_3493582m_87267c_&promocode={promocode}"
+        },
+        "back": "↩️ Артқа"
+    },
+    "en": {
+        "casino": {
+            "text": "Casino Bonus",
+            "url": "https://promo.fan-sport.tech/kz-casino-rg/?tag=d_3493582m_86084c_&promocode={promocode}"
+        },
+        "sport": {
+            "text": "Bonus Sports",
+            "url": "https://promo.fan-sport.tech/kz-sport-rg/?tag=d_3493582m_87267c_&promocode={promocode}"
+        },
+        "back": "↩️ Back"
+    },
+    "ru": {
+        "casino": {
+            "text": "Бонус на Казино",
+            "url": "https://promo.fan-sport.tech/kz-casino-rg/?tag=d_3493582m_86084c_&promocode={promocode}"
+        },
+        "sport": {
+            "text": "Бонус на Спорт",
+            "url": "https://promo.fan-sport.tech/kz-sport-rg/?tag=d_3493582m_87267c_&promocode={promocode}"
+        },
+        "back": "↩️ Назад"
+    }
+}
+
+
+async def create_registration_keyboard(lang):
+    promocode_sports = await get_promocode_sports()
+    promocode_casino = await get_promocode_casino()
+
+    buttons = [
+        [
+            KeyboardButton(text=registration_kb[lang]['casino']['text'],
+                           web_app=WebAppInfo(url=registration_kb[lang]['casino']['url'].format(promocode=promocode_casino))),
+            KeyboardButton(text=registration_kb[lang]['sport']['text'],
+                           web_app=WebAppInfo(url=registration_kb[lang]['sport']['url'].format(promocode=promocode_sports)))
+        ],
+        [KeyboardButton(text=registration_kb[lang]['back'])]
+    ]
+
+    return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)

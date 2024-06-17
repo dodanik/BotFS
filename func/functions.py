@@ -5,13 +5,14 @@ import aiogram
 import aiohttp
 from aiogram import types, exceptions, Bot
 from aiogram.enums import MenuButtonType, parse_mode
+from aiogram.exceptions import TelegramAPIError
 from aiogram.types import MenuButtonWebApp, WebAppInfo
 from sqlalchemy import select, func, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database.list_users import get_users_chat_on_id, get_history_chat, add_to_history_chat, get_admins_on, \
     get_chat_id_number, remove_user_chat_on_id, user_get_update, user_set_update, get_chat_id_number_user, \
-    get_list_users_id_message, remove_to_list_users_id_message, remove_to_history_chat
+    get_list_users_id_message, remove_to_list_users_id_message, remove_to_history_chat, get_link_mirror
 from database.models import Users
 from database.orm_query import orm_get_post, update_user_time
 from filters.chat_types import my_list_chat_id_remove
@@ -20,33 +21,49 @@ from kb.keyboard import create_keyboard, chat_close_server_message
 
 
 async def set_web_app_button_text(language_code, chatid, bot):
+    link = await get_link_mirror()
     if language_code:
         if language_code == 'ru':
             button_text = 'Играть'
-            url = 'https://fan-sport.com/'
+            url = link
         elif language_code == 'uk':
             button_text = 'Грати'
-            url = 'https://fan-sport.com/'
+            url = link
         elif language_code == 'pt':
             button_text = 'Jogar'
-            url = 'https://fan-sport.com/'
+            url = link
         elif language_code == 'kk':
             button_text = 'Ойнау'
-            url = 'https://fan-sport.com/'
+            url = link
         elif language_code == 'en':
             button_text = 'Play'
-            url = 'https://fan-sport.com/'
+            url = link
         else:
             button_text = 'Play'
-            url = 'https://fan-sport.com/'  # По умолчанию используем английский язык и стандартный URL
+            url = link  # По умолчанию используем английский язык и стандартный URL
 
-        await bot.set_chat_menu_button(chatid,
-                                       menu_button=MenuButtonWebApp(
-                                           MenuButtonType=MenuButtonType.WEB_APP,
-                                           text=button_text,
-                                           web_app=WebAppInfo(url=url)
-                                       )
-                                       )
+        try:
+            await bot.set_chat_menu_button(
+                chatid,
+                menu_button=MenuButtonWebApp(
+                    type=MenuButtonType.WEB_APP,
+                    text=button_text,
+                    web_app=WebAppInfo(url=url)
+                )
+            )
+        except TelegramAPIError as e:
+            # Обработка ошибок, связанных с API Telegram
+            print(f"Ошибка Telegram API при установке кнопки меню для чата {chatid}: {e}")
+        except Exception as e:
+            # Обработка всех остальных ошибок
+            print(f"Произошла непредвиденная ошибка при установке кнопки меню для чата {chatid}: {e}")
+
+
+
+async def set_button_web_app_to_link(bot):
+    chat_id_number = await get_chat_id_number()
+    for key, value in chat_id_number.items():
+        await set_web_app_button_text(value, key, bot)
 
 
 # async def deletemessague(chat_id, mess, bot):
@@ -128,7 +145,7 @@ async def update_user_datatime(session, user_id):
 
 async def delete_message(bot):
     while True:
-        await asyncio.sleep(2)
+        await asyncio.sleep(3)
         data = await get_list_users_id_message()
         if data:
             for key, values in data.copy().items():

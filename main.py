@@ -12,11 +12,14 @@ from database.list_users import get_botlang, set_botlang, save_botlang, get_user
     get_history_chat, add_to_history_chat, remove_admins_on, get_admins_on, write_to_local_data_user_contact, \
     get_chat_id_number, edit_chat_id_number, del_chat_id_number, get_hour_send_post, user_get_update, user_set_update, \
     save_local_botlang, save_local_chat_id_number, get_count_region, edit_count_region, get_list_users_id_message, \
-    remove_to_list_users_id_message
-from database.models import PostUa
+    remove_to_list_users_id_message, remove_user_chat_on_id, remove_to_history_chat, get_promocode_sports, \
+    get_promocode_casino, save_neactive_list, save_user_vip_list
+
 from database.orm_query import orm_get_post, orm_add_users, check_user_exists, update_user_time, orm_get_users
-from filters.chat_types import my_list_chat_id_add, get_my_admins_list
+from filters.chat_types import my_list_chat_id_add, get_my_admins_list, my_list_chat_id_remove
 from func.functions import set_web_app_button_text, send_message_chat, delete_message
+from handlers.adminSuper import admin_super
+from handlers.avivate_vip import activate_vip_router
 
 from handlers.messagues import search_user, get_headers, create_chat
 from middlewares.db import DataBaseSession
@@ -33,8 +36,9 @@ from dotenv import find_dotenv, load_dotenv
 load_dotenv(find_dotenv())
 
 from database.engine import create_db, session_maker
-from func.push_post import pushmessages_ua, pushmessages_ru, pushmessages_en, pushmessages_pt, \
-    pushmessages_uz, pushmessages_kz
+from func.push_post import pushmessages_ru, pushmessages_en, pushmessages_kz, pushmessages_custom_kz, \
+    pushmessages_custom_en, pushmessages_custom_ru, send_post_to_inactive_users_2_days, \
+    send_post_to_inactive_users_5_days
 
 from kb import keyboard
 from kb.keyboard import create_keyboard, chat_kb
@@ -54,7 +58,9 @@ dp = Dispatcher()
 
 dp.include_router(channel_handler)
 dp.include_router(chat_router)
+dp.include_router(admin_super)
 dp.include_router(admin_router)
+dp.include_router(activate_vip_router)
 dp.include_router(menu_router)
 
 
@@ -66,6 +72,14 @@ photofirst = FSInputFile('img/firstslider.jpg', 'rb')
 async def command_start(message: types.Message, session: AsyncSession):
     global bot
     botlang = await get_botlang()
+
+    await my_list_chat_id_remove(message.chat.id)
+    await remove_user_chat_on_id(message.chat.id)
+    await remove_to_history_chat(message.chat.id)
+
+    promocodeSports = await get_promocode_sports()
+    promocodeCasino = await get_promocode_casino()
+
     if message.chat.id not in await get_chat_id_number():
         await edit_chat_id_number(message.chat.id, message.from_user.language_code)
 
@@ -74,8 +88,10 @@ async def command_start(message: types.Message, session: AsyncSession):
 
     if botlang[message.from_user.id] == 'ru':
         inline_kb = types.InlineKeyboardMarkup(
-            inline_keyboard=[[types.InlineKeyboardButton(text="🚀Играть🚀", web_app=WebAppInfo(
-                url='https://lxzsdfgw.xyz/L?tag=d_3222083m_2393c_&site=3222083&ad=2393&r=slots'))]])
+            inline_keyboard=[[types.InlineKeyboardButton(text="Бонус Казино", web_app=WebAppInfo(
+                                    url=f'https://promo.fan-sport.tech/kz-casino-rg/?tag=d_3493582m_86084c_&promocode={promocodeCasino}')),
+                              types.InlineKeyboardButton(text="Бонус Спорт", web_app=WebAppInfo(
+                                  url=f'https://promo.fan-sport.tech/kz-sport-rg/?tag=d_3493582m_87267c_&promocode={promocodeSports}'))]])
         await message.answer_photo(photofirst,
                                    caption=f'Рады видеть Вас,  {message.from_user.first_name}!\n' '🚀Безумное предложение для тебя!💥\n' 'Не пропусти выгодное предложение 100% бонус на первый депозит в казино ДО 100 ЕВРО!\n' 'Делай ставки и выигрывай🏆💯',
                                    parse_mode='html',
@@ -85,49 +101,51 @@ async def command_start(message: types.Message, session: AsyncSession):
                                  resize_keyboard=True,
                                  input_field_placeholder='Добро пожаловать!'))
 
-    elif botlang[message.from_user.id] == 'uk':
-        inline_kb = types.InlineKeyboardMarkup(
-            inline_keyboard=[[types.InlineKeyboardButton(text="🚀Грати🚀", web_app=WebAppInfo(
-                url='https://lxzsdfgw.xyz/L?tag=d_3222083m_2393c_&site=3222083&ad=2393&r=slots'))]])
-        await message.answer_photo(photofirst,
-                                   caption=f'Раді Вас бачити,  {message.from_user.first_name}!\n' '🚀Шалена пропозиція для тебе!💥\n' 'Не пропусти вигідну пропозицію 100% бонус на перший депозит на спорт ДО 3000 UAH!\n' 'Роби ставки та вигравай🏆💯',
-                                   parse_mode='html',
-                                   reply_markup=inline_kb)
-        await message.answer(text="💥ШВИДШЕ ТИЦЯЙ ГРАТИ!!!💥",
-                             reply_markup=create_keyboard(f'{botlang[message.from_user.id]}', 'start_kb', 2).as_markup(
-                                 resize_keyboard=True,
-                                 input_field_placeholder='Раді Вас вітати!!'))
-
-    elif botlang[message.from_user.id] == 'uz':
-        inline_kb = types.InlineKeyboardMarkup(
-            inline_keyboard=[[types.InlineKeyboardButton(text="🚀O'ynang🚀", web_app=WebAppInfo(
-                url='https://lxzsdfgw.xyz/L?tag=d_3222083m_2393c_&site=3222083&ad=2393&r=slots'))]])
-        await message.answer_photo(photofirst,
-                                   caption=f"Sizni ko'rganimdan xursandman, {message.from_user.first_name}!\n🚀Siz uchun aqldan ozgan taklif!\n💥Foydali taklifni o'tkazib yubormang, 3000 UAH gacha bo'lgan sport turlari bo'yicha birinchi depozit uchun 100% bonus! \nTiking va yutib oling.🏆💯",
-                                   parse_mode='html',
-                                   reply_markup=inline_kb)
-        await message.answer(text="💥TEZ O'YNASHGA UYINING!!!💥",
-                             reply_markup=create_keyboard(f'{botlang[message.from_user.id]}', 'start_kb', 2).as_markup(
-                                 resize_keyboard=True,
-                                 input_field_placeholder='Sizni kutib olishdan xursandmiz!!'))
-
-    elif botlang[message.from_user.id] == 'pt':
-        inline_kb = types.InlineKeyboardMarkup(
-            inline_keyboard=[[types.InlineKeyboardButton(text="🚀Jogar🚀", web_app=WebAppInfo(
-                url='https://lxzsdfgw.xyz/L?tag=d_3222083m_2393c_&site=3222083&ad=2393&r=slots'))]])
-        await message.answer_photo(photofirst,
-                                   caption=f"Estamos felizes em ver você, {message.from_user.first_name}!\n🚀Oferta maluca para você!\n💥Não perca a lucrativa oferta de bônus de 100% no seu primeiro depósito no cassino ATÉ 100 EUROS! \nFaça suas apostas e ganhe🏆💯",
-                                   parse_mode='html',
-                                   reply_markup=inline_kb)
-        await message.answer(text="💥Entre no jogo!!!💥",
-                             reply_markup=create_keyboard(f'{botlang[message.from_user.id]}', 'start_kb', 2).as_markup(
-                                 resize_keyboard=True,
-                                 input_field_placeholder='Bem-vindo!'))
+    # elif botlang[message.from_user.id] == 'uk':
+    #     inline_kb = types.InlineKeyboardMarkup(
+    #         inline_keyboard=[[types.InlineKeyboardButton(text="🚀Грати🚀", web_app=WebAppInfo(
+    #             url='https://lxzsdfgw.xyz/L?tag=d_3222083m_2393c_&site=3222083&ad=2393&r=slots'))]])
+    #     await message.answer_photo(photofirst,
+    #                                caption=f'Раді Вас бачити,  {message.from_user.first_name}!\n' '🚀Шалена пропозиція для тебе!💥\n' 'Не пропусти вигідну пропозицію 100% бонус на перший депозит на спорт ДО 3000 UAH!\n' 'Роби ставки та вигравай🏆💯',
+    #                                parse_mode='html',
+    #                                reply_markup=inline_kb)
+    #     await message.answer(text="💥ШВИДШЕ ТИЦЯЙ ГРАТИ!!!💥",
+    #                          reply_markup=create_keyboard(f'{botlang[message.from_user.id]}', 'start_kb', 2).as_markup(
+    #                              resize_keyboard=True,
+    #                              input_field_placeholder='Раді Вас вітати!!'))
+    #
+    # elif botlang[message.from_user.id] == 'uz':
+    #     inline_kb = types.InlineKeyboardMarkup(
+    #         inline_keyboard=[[types.InlineKeyboardButton(text="🚀O'ynang🚀", web_app=WebAppInfo(
+    #             url='https://lxzsdfgw.xyz/L?tag=d_3222083m_2393c_&site=3222083&ad=2393&r=slots'))]])
+    #     await message.answer_photo(photofirst,
+    #                                caption=f"Sizni ko'rganimdan xursandman, {message.from_user.first_name}!\n🚀Siz uchun aqldan ozgan taklif!\n💥Foydali taklifni o'tkazib yubormang, 3000 UAH gacha bo'lgan sport turlari bo'yicha birinchi depozit uchun 100% bonus! \nTiking va yutib oling.🏆💯",
+    #                                parse_mode='html',
+    #                                reply_markup=inline_kb)
+    #     await message.answer(text="💥TEZ O'YNASHGA UYINING!!!💥",
+    #                          reply_markup=create_keyboard(f'{botlang[message.from_user.id]}', 'start_kb', 2).as_markup(
+    #                              resize_keyboard=True,
+    #                              input_field_placeholder='Sizni kutib olishdan xursandmiz!!'))
+    #
+    # elif botlang[message.from_user.id] == 'pt':
+    #     inline_kb = types.InlineKeyboardMarkup(
+    #         inline_keyboard=[[types.InlineKeyboardButton(text="🚀Jogar🚀", web_app=WebAppInfo(
+    #             url='https://lxzsdfgw.xyz/L?tag=d_3222083m_2393c_&site=3222083&ad=2393&r=slots'))]])
+    #     await message.answer_photo(photofirst,
+    #                                caption=f"Estamos felizes em ver você, {message.from_user.first_name}!\n🚀Oferta maluca para você!\n💥Não perca a lucrativa oferta de bônus de 100% no seu primeiro depósito no cassino ATÉ 100 EUROS! \nFaça suas apostas e ganhe🏆💯",
+    #                                parse_mode='html',
+    #                                reply_markup=inline_kb)
+    #     await message.answer(text="💥Entre no jogo!!!💥",
+    #                          reply_markup=create_keyboard(f'{botlang[message.from_user.id]}', 'start_kb', 2).as_markup(
+    #                              resize_keyboard=True,
+    #                              input_field_placeholder='Bem-vindo!'))
 
     elif botlang[message.from_user.id] == 'kk':
         inline_kb = types.InlineKeyboardMarkup(
-            inline_keyboard=[[types.InlineKeyboardButton(text="🚀Ойнау🚀", web_app=WebAppInfo(
-                url='https://lxzsdfgw.xyz/L?tag=d_3222083m_2393c_&site=3222083&ad=2393&r=slots'))]])
+            inline_keyboard=[[types.InlineKeyboardButton(text="Казино Бонусы", web_app=WebAppInfo(
+                                    url=f'https://promo.fan-sport.tech/kz-casino-rg/?tag=d_3493582m_86084c_&promocode={promocodeCasino}')),
+                              types.InlineKeyboardButton(text="Бонус Спорты", web_app=WebAppInfo(
+                                  url=f'https://promo.fan-sport.tech/kz-sport-rg/?tag=d_3493582m_87267c_&promocode={promocodeSports}'))]])
         await message.answer_photo(photofirst,
                                    caption=f'Біз сізді көргенімізге қуаныштымыз, {message.from_user.first_name}!\n🚀Сізге арналған керемет ұсыныс!\n💥100 ЕВРОҒА ДЕЙІН казинодағы алғашқы салымыңыз бойынша 100% бонустың тиімді ұсынысын жіберіп алмаңыз! \nҰтыс тігулеріңізді қойыңыз және ұтып алыңыз🏆💯',
                                    parse_mode='html',
@@ -140,8 +158,10 @@ async def command_start(message: types.Message, session: AsyncSession):
     else:
         botlang[message.from_user.id] = 'en'
         inline_kb = types.InlineKeyboardMarkup(
-            inline_keyboard=[[types.InlineKeyboardButton(text="🚀Play🚀", web_app=WebAppInfo(
-                url='https://lxzsdfgw.xyz/L?tag=d_3222083m_2393c_&site=3222083&ad=2393&r=slots'))]])
+            inline_keyboard=[[types.InlineKeyboardButton(text="Casino Bonus", web_app=WebAppInfo(
+                                    url=f'https://promo.fan-sport.tech/kz-casino-rg/?tag=d_3493582m_86084c_&promocode={promocodeCasino}')),
+                              types.InlineKeyboardButton(text="Bonus Sports", web_app=WebAppInfo(
+                                  url=f'https://promo.fan-sport.tech/kz-sport-rg/?tag=d_3493582m_87267c_&promocode={promocodeSports}'))]])
         await message.answer_photo(photofirst,
                                    caption=f"We're glad to see you,  {message.from_user.first_name}!\n🚀Unbelievable offer for you!💥\nDon't miss the opportunity of 100% bonus on the first deposit at the casino UP TO 3000 UAH!\nPlace your bets and win🏆💯",
                                    parse_mode='html',
@@ -154,7 +174,7 @@ async def command_start(message: types.Message, session: AsyncSession):
         if message.from_user.first_name:
             if message.from_user.last_name:
                 if await check_user_exists(session, message.from_user.id):
-                    await orm_add_users(session, {'userid': message.from_user.id, 'username': message.from_user.username,
+                    await orm_add_users(session, {'userid': message.from_user.id, 'chatid': message.chat.id, 'username': message.from_user.username,
                                                   'firstname': message.from_user.first_name, 'lastname': message.from_user.last_name, 'language': message.from_user.language_code})
                     await user_set_update(message.from_user.id, datetime.now())
                 else:
@@ -162,7 +182,7 @@ async def command_start(message: types.Message, session: AsyncSession):
                     await user_set_update(message.from_user.id, datetime.now())
             else:
                 if await check_user_exists(session, message.from_user.id):
-                    await orm_add_users(session, {'userid': message.from_user.id, 'username': message.from_user.username,
+                    await orm_add_users(session, {'userid': message.from_user.id,'chatid': message.chat.id, 'username': message.from_user.username,
                                                   'firstname': message.from_user.first_name, 'language': message.from_user.language_code})
                     await user_set_update(message.from_user.id, datetime.now())
                 else:
@@ -170,7 +190,7 @@ async def command_start(message: types.Message, session: AsyncSession):
                     await user_set_update(message.from_user.id, datetime.now())
         elif message.from_user.last_name:
             if await check_user_exists(session, message.from_user.id):
-                await orm_add_users(session, {'userid': message.from_user.id, 'username': message.from_user.username,
+                await orm_add_users(session, {'userid': message.from_user.id, 'chatid': message.chat.id, 'username': message.from_user.username,
                                               'lastname': message.from_user.last_name,
                                               'language': message.from_user.language_code})
                 await user_set_update(message.from_user.id, datetime.now())
@@ -179,7 +199,7 @@ async def command_start(message: types.Message, session: AsyncSession):
                 await user_set_update(message.from_user.id, datetime.now())
         else:
             if await check_user_exists(session, message.from_user.id):
-                await orm_add_users(session, {'userid': message.from_user.id, 'username': message.from_user.username,
+                await orm_add_users(session, {'userid': message.from_user.id, 'chatid': message.chat.id, 'username': message.from_user.username,
                                               'language': message.from_user.language_code})
                 await user_set_update(message.from_user.id, datetime.now())
             else:
@@ -189,7 +209,7 @@ async def command_start(message: types.Message, session: AsyncSession):
         if message.from_user.first_name:
             if message.from_user.last_name:
                 if await check_user_exists(session, message.from_user.id):
-                    await orm_add_users(session, {'userid': message.from_user.id,
+                    await orm_add_users(session, {'userid': message.from_user.id, 'chatid': message.chat.id,
                                                   'firstname': message.from_user.first_name, 'lastname': message.from_user.last_name, 'language': message.from_user.language_code})
                     await user_set_update(message.from_user.id, datetime.now())
                 else:
@@ -197,7 +217,7 @@ async def command_start(message: types.Message, session: AsyncSession):
                     await user_set_update(message.from_user.id, datetime.now())
             else:
                 if await check_user_exists(session, message.from_user.id):
-                    await orm_add_users(session, {'userid': message.from_user.id,
+                    await orm_add_users(session, {'userid': message.from_user.id, 'chatid': message.chat.id,
                                                   'firstname': message.from_user.first_name, 'language': message.from_user.language_code})
                     await user_set_update(message.from_user.id, datetime.now())
                 else:
@@ -206,7 +226,7 @@ async def command_start(message: types.Message, session: AsyncSession):
 
         elif message.from_user.last_name:
             if await check_user_exists(session, message.from_user.id):
-                await orm_add_users(session, {'userid': message.from_user.id,
+                await orm_add_users(session, {'userid': message.from_user.id, 'chatid': message.chat.id,
                                               'lastname': message.from_user.last_name,
                                               'language': message.from_user.language_code})
                 await user_set_update(message.from_user.id, datetime.now())
@@ -241,6 +261,8 @@ async def save_global_data():
         time_until_execution = (scheduled_time - now).total_seconds()
         await asyncio.sleep(time_until_execution)
         await save_local_botlang()
+        await save_neactive_list()
+        await save_user_vip_list()
         await save_local_chat_id_number()
 
 async def main():
@@ -248,20 +270,24 @@ async def main():
     await create_db()
     dp.update.middleware(DataBaseSession(session_pool=session_maker))
     await get_data_update_users()
-    post_ua = pushmessages_ua(bot)
     post_ru = pushmessages_ru(bot)
+    post_custom_ru = pushmessages_custom_ru(bot)
+    post_custom_en = pushmessages_custom_en(bot)
+    post_custom_kz = pushmessages_custom_kz(bot)
+    inactive_users_2_days = send_post_to_inactive_users_2_days(bot)
+    inactive_users_5_days = send_post_to_inactive_users_5_days(bot)
     post_en = pushmessages_en(bot)
-    post_pt = pushmessages_pt(bot)
-    post_uz = pushmessages_uz(bot)
     post_kz = pushmessages_kz(bot)
     send_message = send_message_chat(bot)
     dell_mes = delete_message(bot)
     save_global = save_global_data()
-    asyncio.create_task(post_ua)
     asyncio.create_task(post_ru)
+    asyncio.create_task(post_custom_ru)
+    asyncio.create_task(post_custom_en)
+    asyncio.create_task(post_custom_kz)
+    asyncio.create_task(inactive_users_2_days)
+    asyncio.create_task(inactive_users_5_days)
     asyncio.create_task(post_en)
-    asyncio.create_task(post_pt)
-    asyncio.create_task(post_uz)
     asyncio.create_task(post_kz)
     asyncio.create_task(send_message)
     asyncio.create_task(dell_mes)
