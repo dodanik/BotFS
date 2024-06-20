@@ -77,9 +77,6 @@ async def command_start(message: types.Message, session: AsyncSession):
     await remove_user_chat_on_id(message.chat.id)
     await remove_to_history_chat(message.chat.id)
 
-    promocodeSports = await get_promocode_sports()
-    promocodeCasino = await get_promocode_casino()
-
     if message.chat.id not in await get_chat_id_number():
         await edit_chat_id_number(message.chat.id, message.from_user.language_code)
 
@@ -89,9 +86,9 @@ async def command_start(message: types.Message, session: AsyncSession):
     if botlang[message.from_user.id] == 'ru':
         inline_kb = types.InlineKeyboardMarkup(
             inline_keyboard=[[types.InlineKeyboardButton(text="Бонус Казино", web_app=WebAppInfo(
-                                    url=f'https://promo.fan-sport.tech/kz-casino-rg/?tag=d_3493582m_86084c_&promocode={promocodeCasino}')),
+                                    url='https://promo.fan-sport.tech/kz-casino-rg/?tag=d_3493582m_86084c_')),
                               types.InlineKeyboardButton(text="Бонус Спорт", web_app=WebAppInfo(
-                                  url=f'https://promo.fan-sport.tech/kz-sport-rg/?tag=d_3493582m_87267c_&promocode={promocodeSports}'))]])
+                                  url='https://promo.fan-sport.tech/kz-sport-rg/?tag=d_3493582m_87267c_'))]])
         await message.answer_photo(photofirst,
                                    caption=f'Рады видеть Вас,  {message.from_user.first_name}!\n' '🚀Безумное предложение для тебя!💥\n' 'Не пропусти выгодное предложение 100% бонус на первый депозит в казино ДО 100 ЕВРО!\n' 'Делай ставки и выигрывай🏆💯',
                                    parse_mode='html',
@@ -143,9 +140,9 @@ async def command_start(message: types.Message, session: AsyncSession):
     elif botlang[message.from_user.id] == 'kk':
         inline_kb = types.InlineKeyboardMarkup(
             inline_keyboard=[[types.InlineKeyboardButton(text="Казино Бонусы", web_app=WebAppInfo(
-                                    url=f'https://promo.fan-sport.tech/kz-casino-rg/?tag=d_3493582m_86084c_&promocode={promocodeCasino}')),
+                                    url='https://promo.fan-sport.tech/kz-casino-rg/?tag=d_3493582m_86084c_')),
                               types.InlineKeyboardButton(text="Бонус Спорты", web_app=WebAppInfo(
-                                  url=f'https://promo.fan-sport.tech/kz-sport-rg/?tag=d_3493582m_87267c_&promocode={promocodeSports}'))]])
+                                  url='https://promo.fan-sport.tech/kz-sport-rg/?tag=d_3493582m_87267c_'))]])
         await message.answer_photo(photofirst,
                                    caption=f'Біз сізді көргенімізге қуаныштымыз, {message.from_user.first_name}!\n🚀Сізге арналған керемет ұсыныс!\n💥100 ЕВРОҒА ДЕЙІН казинодағы алғашқы салымыңыз бойынша 100% бонустың тиімді ұсынысын жіберіп алмаңыз! \nҰтыс тігулеріңізді қойыңыз және ұтып алыңыз🏆💯',
                                    parse_mode='html',
@@ -159,9 +156,9 @@ async def command_start(message: types.Message, session: AsyncSession):
         botlang[message.from_user.id] = 'en'
         inline_kb = types.InlineKeyboardMarkup(
             inline_keyboard=[[types.InlineKeyboardButton(text="Casino Bonus", web_app=WebAppInfo(
-                                    url=f'https://promo.fan-sport.tech/kz-casino-rg/?tag=d_3493582m_86084c_&promocode={promocodeCasino}')),
+                                    url='https://promo.fan-sport.tech/kz-casino-rg/?tag=d_3493582m_86084c_')),
                               types.InlineKeyboardButton(text="Bonus Sports", web_app=WebAppInfo(
-                                  url=f'https://promo.fan-sport.tech/kz-sport-rg/?tag=d_3493582m_87267c_&promocode={promocodeSports}'))]])
+                                  url='https://promo.fan-sport.tech/kz-sport-rg/?tag=d_3493582m_87267c_'))]])
         await message.answer_photo(photofirst,
                                    caption=f"We're glad to see you,  {message.from_user.first_name}!\n🚀Unbelievable offer for you!💥\nDon't miss the opportunity of 100% bonus on the first deposit at the casino UP TO 3000 UAH!\nPlace your bets and win🏆💯",
                                    parse_mode='html',
