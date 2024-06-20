@@ -486,33 +486,33 @@ registration_kb = {
     "kk": {
         "casino": {
             "text": "Казино Бонусы",
-            "url": "https://promo.fan-sport.tech/kz-casino-rg/?tag=d_3493582m_86084c_&promocode={promocode}"
+            "url": "https://promo.fan-sport.tech/kz-casino-rg/?tag=d_3493582m_86084c_"
         },
         "sport": {
             "text": "Бонус Спорты",
-            "url": "https://promo.fan-sport.tech/kz-sport-rg/?tag=d_3493582m_87267c_&promocode={promocode}"
+            "url": "https://promo.fan-sport.tech/kz-sport-rg/?tag=d_3493582m_87267c_"
         },
         "back": "↩️ Артқа"
     },
     "en": {
         "casino": {
             "text": "Casino Bonus",
-            "url": "https://promo.fan-sport.tech/kz-casino-rg/?tag=d_3493582m_86084c_&promocode={promocode}"
+            "url": "https://promo.fan-sport.tech/kz-casino-rg/?tag=d_3493582m_86084c_"
         },
         "sport": {
             "text": "Bonus Sports",
-            "url": "https://promo.fan-sport.tech/kz-sport-rg/?tag=d_3493582m_87267c_&promocode={promocode}"
+            "url": "https://promo.fan-sport.tech/kz-sport-rg/?tag=d_3493582m_87267c_"
         },
         "back": "↩️ Back"
     },
     "ru": {
         "casino": {
             "text": "Бонус на Казино",
-            "url": "https://promo.fan-sport.tech/kz-casino-rg/?tag=d_3493582m_86084c_&promocode={promocode}"
+            "url": "https://promo.fan-sport.tech/kz-casino-rg/?tag=d_3493582m_86084c_"
         },
         "sport": {
             "text": "Бонус на Спорт",
-            "url": "https://promo.fan-sport.tech/kz-sport-rg/?tag=d_3493582m_87267c_&promocode={promocode}"
+            "url": "https://promo.fan-sport.tech/kz-sport-rg/?tag=d_3493582m_87267c_"
         },
         "back": "↩️ Назад"
     }
@@ -520,15 +520,12 @@ registration_kb = {
 
 
 async def create_registration_keyboard(lang):
-    promocode_sports = await get_promocode_sports()
-    promocode_casino = await get_promocode_casino()
-
     buttons = [
         [
             KeyboardButton(text=registration_kb[lang]['casino']['text'],
-                           web_app=WebAppInfo(url=registration_kb[lang]['casino']['url'].format(promocode=promocode_casino))),
+                           web_app=WebAppInfo(url=registration_kb[lang]['casino']['url'])),
             KeyboardButton(text=registration_kb[lang]['sport']['text'],
-                           web_app=WebAppInfo(url=registration_kb[lang]['sport']['url'].format(promocode=promocode_sports)))
+                           web_app=WebAppInfo(url=registration_kb[lang]['sport']['url']))
         ],
         [KeyboardButton(text=registration_kb[lang]['back'])]
     ]
