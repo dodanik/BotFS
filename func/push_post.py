@@ -13,7 +13,7 @@ from database.list_users import get_count_region, get_hour_send_post, get_chat_i
     get_admins_on, edit_count_region, del_chat_id_number, get_count_custom_region, edit_count_custom_region, \
     get_promocode_sports, get_promocode_casino, \
     get_user_neactive_5_days_send_post_list, get_user_neactive_2_days_send_post_list, \
-    add_user_neactive_2_days_send_post_list, add_user_neactive_5_days_send_post_list
+    add_user_neactive_2_days_send_post_list, add_user_neactive_5_days_send_post_list, get_link_mirror
 from database.models import PostRu, PostEn, PostKz, PostCustomKz, PostCustomEn, PostCustomRu
 from database.orm_query import orm_get_post, orm_get_inactive_users
 from dotenv import find_dotenv, load_dotenv
@@ -54,6 +54,7 @@ async def pushmessages_ru(bot):
                 if len(all_posts) <= count:
                     count = 0
             post = all_posts[count]
+            login_kb = types.InlineKeyboardButton(text="Играть", web_app=WebAppInfo(url=await get_link_mirror()))
             chat_id_number = await get_chat_id_number()
             if chat_id_number:
                 chat_id_set_region = [key for key, value in chat_id_number.copy().items() if value == 'ru']
@@ -63,7 +64,7 @@ async def pushmessages_ru(bot):
                         users_chat_ids = await get_users_chat_on_id()
                         admins_list_id_on = await get_admins_on()
                         if key not in users_chat_ids and key not in admins_list_id_on:
-                            await send_push_post(key, post, bot)
+                            await send_push_post(key, post, bot, login_kb)
                     count += 1
                     await edit_count_region(count, 'ru')
 
@@ -85,6 +86,7 @@ async def pushmessages_en(bot):
                 if len(all_posts) <= count:
                     count = 0
             post = all_posts[count]
+            login_kb = types.InlineKeyboardButton(text="Play", web_app=WebAppInfo(url=await get_link_mirror()))
             chat_id_number = await get_chat_id_number()
             if chat_id_number:
                 chat_id_set_region = [key for key, value in chat_id_number.copy().items() if value == 'en']
@@ -94,7 +96,7 @@ async def pushmessages_en(bot):
                         users_chat_ids = await get_users_chat_on_id()
                         admins_list_id_on = await get_admins_on()
                         if key not in users_chat_ids and key not in admins_list_id_on:
-                            await send_push_post(key, post, bot)
+                            await send_push_post(key, post, bot, login_kb)
                     count += 1
                     await edit_count_region(count, 'en')
 
@@ -117,6 +119,7 @@ async def pushmessages_kz(bot):
                 if len(all_posts) <= count:
                     count = 0
             post = all_posts[count]
+            login_kb = types.InlineKeyboardButton(text="Ойнау",web_app=WebAppInfo(url=await get_link_mirror()))
             chat_id_number = await get_chat_id_number()
             if chat_id_number:
                 chat_id_set_region = [key for key, value in chat_id_number.copy().items() if value == 'kk']
@@ -126,7 +129,7 @@ async def pushmessages_kz(bot):
                         users_chat_ids = await get_users_chat_on_id()
                         admins_list_id_on = await get_admins_on()
                         if key not in users_chat_ids and key not in admins_list_id_on:
-                            await send_push_post(key, post, bot)
+                            await send_push_post(key, post, bot, login_kb)
                     count += 1
                     await edit_count_region(count, 'kz')
 
@@ -308,7 +311,7 @@ async def send_post_to_inactive_users_2_days(bot):
 
 async def time_post(hour):
     now = datetime.now()
-    scheduled_time = now.replace(hour=hour, minute=51, second=0, microsecond=0)
+    scheduled_time = now.replace(hour=hour, minute=37, second=0, microsecond=0)
     if now > scheduled_time:
         scheduled_time += timedelta(days=1)
     time_until_execution = (scheduled_time - now).total_seconds()
@@ -324,19 +327,19 @@ async def time_post_random(days):
     time_until_execution = (scheduled_time - now).total_seconds()
     return time_until_execution
 
-async def send_push_post(key, post, bot):
+async def send_push_post(key, post, bot, login_btn):
     try:
         if post.type == 'photo':
             await bot.send_photo(key, post.image, caption=post.description,
                                  reply_markup=types.InlineKeyboardMarkup(inline_keyboard=[[types.InlineKeyboardButton(
-                                     text=f"{post.button}", web_app=WebAppInfo(url=post.link))]]))
+                                     text=f"{post.button}", web_app=WebAppInfo(url=post.link)), login_btn]]))
         if post.type == 'video':
             await bot.send_video(key, post.image, caption=post.description,
                                  reply_markup=types.InlineKeyboardMarkup(inline_keyboard=[[types.InlineKeyboardButton(
-                                     text=f"{post.button}", web_app=WebAppInfo(url=post.link))]]))
+                                     text=f"{post.button}", web_app=WebAppInfo(url=post.link)), login_btn]]))
         if post.type == 'animation':
             await bot.send_animation(key, post.image, caption=post.description,
-                                     reply_markup=types.InlineKeyboardMarkup(inline_keyboard=[[types.InlineKeyboardButton(text=f"{post.button}",web_app=WebAppInfo(url=post.link))]]))
+                                     reply_markup=types.InlineKeyboardMarkup(inline_keyboard=[[types.InlineKeyboardButton(text=f"{post.button}",web_app=WebAppInfo(url=post.link)), login_btn]]))
     except exceptions.TelegramForbiddenError as e:
         await del_chat_id_number(key)
         print(f"Пользователь заблокировал бота: {e}")
